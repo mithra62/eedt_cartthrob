@@ -18,3 +18,4 @@ return [
     'namespace' => 'DebugToolbar\CartThrob',
     'settings_exist' => false
 ];
+
