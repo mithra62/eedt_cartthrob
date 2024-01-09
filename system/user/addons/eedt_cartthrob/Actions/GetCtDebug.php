@@ -8,7 +8,9 @@ class GetCtDebug extends AbstractRoute
 {
     public function process()
     {
-        ee()->load->add_package_path(PATH_THIRD . 'cartthrob/');
+        $panel = ee('eedt_cartthrob:PanelService');
+        echo ee()->load->view('eedt_cartthrob', $panel->compilePanelVars(), true);
+        exit;
 
         $vars['session'] = ee()->cartthrob_session->toArray();
         $vars = array_merge($vars, ee()->cartthrob->cart->toArray());
@@ -48,6 +50,8 @@ class GetCtDebug extends AbstractRoute
                         if ($value == "" && $parent_key !== null) {
                             ee()->load->model('cartthrob_field_model');
 
+                            echo $parent_key;
+                            exit;
                             $item = ee()->cartthrob->cart->item($parent_key);
                             $field_id = ee()->cartthrob->store->config('product_channel_fields', $item->meta('channel_id'), $key);
 
