@@ -3,8 +3,8 @@
 
 //ee()->load->helpers('eedt_output');
 ?>
-<div style="float:right">
-    <a href="javascript:;" id="EEDebug_cartthrob_general" class="EEDebug_actions">General</a>
+<div style="float:right" id="EEDebug_cartthrob_nav_items">
+    <a href="javascript:;" id="EEDebug_cartthrob_general" class="EEDebug_actions flash">General</a>
     | <a href="javascript:;" id="EEDebug_cartthrob_discounts" class="EEDebug_actions">Discounts</a>
     | <a href="javascript:;" id="EEDebug_cartthrob_customer_info" class="EEDebug_actions">Customer</a>
     | <a href="javascript:;" id="EEDebug_cartthrob_cart_items" class="EEDebug_actions">Items (<?php echo count($items); ?>)</a>
