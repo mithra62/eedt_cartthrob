@@ -58,17 +58,39 @@ class PanelService
         return $items;
     }
 
+    /**
+     * @param array $info
+     * @return array
+     */
+    protected function compileCoupons(array $info): array
+    {
+        $return = [];
+        if(isset($info['coupon_codes']) && is_array($info['coupon_codes'])) {
+            foreach($info['coupon_codes'] AS $coupon) {
+
+                $code = ee()->cartthrob->get_coupon_code_data($coupon);
+                if($code) {
+                    $return[] = array_merge(['code' => $coupon], $code);
+                }
+            }
+        }
+
+        return $return;
+    }
+
     public function compilePanelVars()
     {
+
         $info = ee()->cartthrob->cart->toArray();
         $items = $this->compileItems();
+        $discount = ee()->cartthrob->cart->discount();
         $vars = [
             'general' => [
                 'total' => ee()->cartthrob->cart->total(),
                 'subtotal' => ee()->cartthrob->cart->subtotal(),
                 'shipping' => ee()->cartthrob->cart->shipping(),
                 'shipping_plus_tax' => ee()->cartthrob->cart->shipping_plus_tax(),
-                'discount' => ee()->cartthrob->cart->discount(),
+                'discount' => $discount,
                 'taxable_subtotal' => ee()->cartthrob->cart->taxable_subtotal(),
                 'tax' => ee()->cartthrob->cart->tax(),
                 'shippable_subtotal' => ee()->cartthrob->cart->shippable_subtotal(),
@@ -93,8 +115,8 @@ class PanelService
             'meta' => $info['meta'],
             'customer_info' => $info['customer_info'],
             'order' => $info['order'],
-            'coupon_codes' => $info['coupon_codes'],
-            'discounts' => [],
+            'coupon_codes' => $this->compileCoupons($info),
+            'discounts' => ee()->cartthrob->get_discount_data(),
             'custom_data' => ee()->cartthrob->cart->custom_data(),
             'session' => ee()->cartthrob_session->toArray(),
         ];
