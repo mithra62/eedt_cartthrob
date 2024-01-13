@@ -36,4 +36,6 @@
         jQuery("#EEDebug_cartthrob_discounts").addClass("flash");
     });
 
+    jQuery("#EEDebug_cartthrob_general").trigger("click");
+
 })();

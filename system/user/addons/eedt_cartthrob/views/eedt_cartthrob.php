@@ -1,14 +1,11 @@
 <div style="float:left"><h4><?php //echo lang('eedt_cartthrob_module_name'); ?></h4></div>
-<?php
 
-//ee()->load->helpers('eedt_output');
-?>
 <div style="float:right" id="EEDebug_cartthrob_nav_items">
-    <a href="javascript:;" id="EEDebug_cartthrob_general" class="EEDebug_actions flash">General</a>
-    | <a href="javascript:;" id="EEDebug_cartthrob_discounts" class="EEDebug_actions">Discounts</a>
-    | <a href="javascript:;" id="EEDebug_cartthrob_customer_info" class="EEDebug_actions">Customer</a>
-    | <a href="javascript:;" id="EEDebug_cartthrob_cart_items" class="EEDebug_actions">Items (<?php echo count($items); ?>)</a>
-    | <a href="javascript:;" id="EEDebug_cartthrob_advanced" class="EEDebug_actions">Advanced</a>
+    <a href="javascript:;" id="EEDebug_cartthrob_general" class=" flash">General</a>
+    | <a href="javascript:;" id="EEDebug_cartthrob_discounts" class="">Discounts</a>
+    | <a href="javascript:;" id="EEDebug_cartthrob_customer_info" class="">Customer</a>
+    | <a href="javascript:;" id="EEDebug_cartthrob_cart_items" class="">Items (<?php echo count($items); ?>)</a>
+    | <a href="javascript:;" id="EEDebug_cartthrob_advanced" class="">Advanced</a>
 </div>
 
 <div class="EEDebug_cartthrob_container EEDebug_cartthrob_general">
@@ -127,10 +124,19 @@
     <br>
     <h4>Custom Data</h4>
     <table style='width:100%;'>
-        <?php foreach($custom_data AS $key => $value): ?>
+        <?php
+        foreach($custom_data AS $key => $value): ?>
             <tr>
                 <td style="width:30%"><?=$key;?></td>
-                <td><?=$value;?></td>
+                <td>
+                <?php
+                if(is_array($value)) {
+                    echo ee('ee_debug_toolbar:OutputService')->outputArray($value);
+                } else {
+                    echo $value;
+                }
+                ?>
+                </td>
             </tr>
         <?php endforeach; ?>
     </table>
