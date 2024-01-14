@@ -22,12 +22,9 @@ class EeDebugToolbarAddPanel extends AbstractHook
 
         $panels['cartthrob'] = new Model();
         $panels['cartthrob']->setName('cartthrob');
-        $panels['cartthrob']->setButtonIcon($vars['theme_img_url'].'logs.png');
+        $panels['cartthrob']->setButtonIcon($vars['theme_img_url'].'cartthrob.png');
 
         $panels['cartthrob']->setButtonLabel(lang('CartThrob'));
-//        loadCartThrobPath();
-//        ee()->load->library('number');
-//        $panels['cartthrob']->setButtonLabel(ee()->number->format(ee()->cartthrob->cart->total()));
         $panels['cartthrob']->setPanelFetchUrl($vars['panel_fetch_url']);
         $panels['cartthrob']->addJs($vars['theme_js_url'] . 'eedt_cartthrob.js');
 
