@@ -36,6 +36,14 @@
         jQuery("#EEDebug_cartthrob_discounts").addClass("flash");
     });
 
+    jQuery("#Eedt_debug_cartthrob_panel").on('click', "#EEDebug_cartthrob_gift_certificates", function () {
+        jQuery(".EEDebug_cartthrob_container").hide();
+        jQuery(".EEDebug_cartthrob_gift_certificates").show();
+        jQuery("#EEDebug_cartthrob_nav_items a").removeClass("flash");
+        jQuery("#EEDebug_cartthrob_gift_certificates").addClass("flash");
+    });
+
+
     jQuery("#EEDebug_cartthrob_general").trigger("click");
 
 })();
