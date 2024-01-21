@@ -18,7 +18,12 @@ class PanelService
         return $value;
     }
 
-    protected function extractPrice($data, $item)
+    /**
+     * @param $data
+     * @param $item
+     * @return string
+     */
+    protected function extractPrice($data, $item): string
     {
         if ($data['price'] == '') {
             $field_id = ee()->cartthrob->store->config('product_channel_fields', $item->meta('channel_id'), 'price');
@@ -37,13 +42,20 @@ class PanelService
         return $value;
     }
 
+    /**
+     * @return array
+     */
     protected function compileItems(): array
     {
         ee()->load->model('cartthrob_field_model');
         $items = ee()->cartthrob->cart->items_array();
         foreach ($items as $key => $item) {
             $items[$key]['price'] = $this->extractPrice($item, ee()->cartthrob->cart->item($key));
-            $items[$key]['inventory'] = $this->extractInventory($item['inventory']);
+
+            if (!empty($item['inventory'])) {
+                $items[$key]['inventory'] = $this->extractInventory($item['inventory']);
+            }
+
             $items[$key]['is_shippable'] = false;
             $items[$key]['is_taxable'] = false;
             if (ee()->cartthrob->cart->item($key)->is_shippable()) {
@@ -65,11 +77,11 @@ class PanelService
     protected function compileCoupons(array $info): array
     {
         $return = [];
-        if(isset($info['coupon_codes']) && is_array($info['coupon_codes'])) {
-            foreach($info['coupon_codes'] AS $coupon) {
+        if (isset($info['coupon_codes']) && is_array($info['coupon_codes'])) {
+            foreach ($info['coupon_codes'] as $coupon) {
 
                 $code = ee()->cartthrob->get_coupon_code_data($coupon);
-                if($code) {
+                if ($code) {
                     $return[] = array_merge(['code' => $coupon], $code);
                 }
             }
@@ -78,6 +90,21 @@ class PanelService
         return $return;
     }
 
+    /**
+     * @return array
+     */
+    protected function getCartInfo()
+    {
+        if (!$this->cart_info) {
+            $this->cart_info = ee()->cartthrob->cart->toArray();
+        }
+
+        return $this->cart_info;
+    }
+
+    /**
+     * @return array
+     */
     public function compilePanelVars()
     {
 
@@ -121,67 +148,10 @@ class PanelService
             'session' => ee()->cartthrob_session->toArray(),
         ];
 
+        if (ee('ee_debug_toolbar:ToolbarService')->isAddonInstalled('cartthrob_gift_certificates')) {
+            $vars['gift_certificates'] = ee('eedt_cartthrob:GiftCertificateService')->compilePanel($info);
+        }
+
         return $vars;
-    }
-
-    protected function getCartInfo()
-    {
-        if (!$this->cart_info) {
-            $this->cart_info = ee()->cartthrob->cart->toArray();
-        }
-
-        return $this->cart_info;
-    }
-
-    private function format_debug($data, $parent_key = null)
-    {
-        if (is_array($data)) {
-            uksort($data, 'strnatcasecmp');
-            $output = "<table style='width:100%;'>";
-            foreach ($data as $key => $value) {
-                $content = "";
-                $output_key = $key;
-                if (is_numeric($key)) {
-                    $output_key = "Row ID: " . $key;
-                }
-                if (is_array($value)) {
-                    $content .= $this->format_debug($value, $key);
-                } else {
-                    if ($key == "inventory" && $value == PHP_INT_MAX) {
-                        $value = "unlimited";
-                    }
-                    if ($key == "price") {
-                        if ($value == "" && $parent_key !== null) {
-                            ee()->load->model('cartthrob_field_model');
-
-                            echo $parent_key;
-                            exit;
-                            $item = ee()->cartthrob->cart->item($parent_key);
-                            $field_id = ee()->cartthrob->store->config('product_channel_fields', $item->meta('channel_id'), $key);
-
-                            $field_name = "channel entry";
-                            if (ee()->cartthrob->store->config('product_channel_fields', $item->meta('channel_id'), "global_price")) {
-                                $field_name = "globally set";
-                            } else if ($field_id) {
-                                $field_name = ee()->cartthrob_field_model->get_field_name($field_id) . " field";
-                            }
-
-                            $value = $item->price() . " (uses " . $field_name . " price)";
-                        } else {
-                            $value = $value . " (uses customer price)";
-                        }
-                    }
-                    if ($key == "entry_id" && empty($value)) {
-                        $value = "(dynamic item)";
-                    }
-                    $content .= htmlspecialchars($value);
-                }
-                $output .= "<tr><td style='padding:5px; vertical-align: top;color:#900;background-color:#ddd;'>" . $output_key . "&nbsp;&nbsp;</td><td style='padding:5px; color:#000;background-color:#ddd;'>" . $content . "</td></tr>\n";
-            }
-            $output .= '</table>';
-        } else {
-            $output = htmlspecialchars($data);
-        }
-        return $output;
     }
 }

@@ -9,6 +9,7 @@ if (!defined('DEBUG_TOOLBAR_CARTTHROB_VERSION')) {
 }
 
 use DebugToolbar\CartThrob\Services\PanelService;
+use DebugToolbar\CartThrob\Services\GiftCertificateService;
 
 return [
     'author' => 'mithra62',
@@ -24,6 +25,11 @@ return [
             ee()->load->add_package_path(PATH_THIRD . 'cartthrob/');
             ee()->lang->loadfile('eedt_cartthrob');
             return new PanelService();
+        },
+        'GiftCertificateService' => function ($addon) {
+            ee()->load->add_package_path(PATH_THIRD . 'cartthrob/');
+            ee()->lang->loadfile('eedt_cartthrob');
+            return new GiftCertificateService();
         },
     ],
 ];

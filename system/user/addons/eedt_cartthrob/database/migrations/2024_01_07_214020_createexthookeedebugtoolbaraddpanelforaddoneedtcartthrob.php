@@ -17,7 +17,7 @@ class CreateExtHookEeDebugToolbarAddPanelForAddonEedtCartthrob extends Migration
             'method' => 'ee_debug_toolbar_add_panel',
             'hook' => 'ee_debug_toolbar_add_panel',
             'settings' => serialize([]),
-            'priority' => 10,
+            'priority' => 12,
             'version' => $addon->getVersion(),
             'enabled' => 'y'
         ];
