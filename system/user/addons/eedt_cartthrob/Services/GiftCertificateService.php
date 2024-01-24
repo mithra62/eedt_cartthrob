@@ -8,13 +8,16 @@ class GiftCertificateService
 {
     use TemplateTrait;
 
-    public function compilePanel(): array
+    public function compilePanel(array $cart): array
     {
         return [
             'general' => [
-                'applied_amount' => $this->inCart(false),
-                'balance_amount' => $this->inCart(),
-                'cart_total_minus_gift_certificates' => $this->CartTotalMinusGiftCertificates(),
+                'applied_amount' => (float)$this->inCart(false),
+                'balance_amount' => (float)$this->inCart(),
+                'cart_total_minus_gc' => $this->CartTotalMinusGiftCertificates(),
+                'total_gift_certificates' => ee('cartthrob_gift_certificates:GiftCertificatesService')->getMemberTotal(ee()->session->userdata('member_id')),
+                'active_gift_certificates' => $codes = (array)ee()->cartthrob->cart->meta('gift_certificates'),
+                'available_gift_certificates' => $this->getMemberCerts(ee()->session->userdata('member_id')),
             ],
         ];
     }
@@ -47,5 +50,30 @@ class GiftCertificateService
         }
 
         return $total;
+    }
+
+    /**
+     * @param int $member_id
+     * @return array
+     */
+    public function getMemberCerts(int $member_id): array
+    {
+        $query = ee()->db->select()->from('cartthrob_gift_certificates')
+            ->where(['member_id' => $member_id])
+            ->where('balance >', 0)
+            ->get();
+
+        $return = [];
+        if ($query) {
+            foreach ($query->result_array() as $key => $cert) {
+                $return[] = [
+                    'code' => $cert['gift_certificate_code'],
+                    'balance' => $cert['balance'],
+                    'amount' => $cert['amount'],
+                ];
+            }
+        }
+
+        return $return;
     }
 }

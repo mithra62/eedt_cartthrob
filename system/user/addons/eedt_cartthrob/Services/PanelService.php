@@ -152,6 +152,10 @@ class PanelService
             $vars['gift_certificates'] = ee('eedt_cartthrob:GiftCertificateService')->compilePanel($info);
         }
 
+        if (ee('ee_debug_toolbar:ToolbarService')->isAddonInstalled('cartthrob_fees')) {
+            $vars['fees'] = ee('eedt_cartthrob:FeesService')->compilePanel($info);
+        }
+
         return $vars;
     }
 }
