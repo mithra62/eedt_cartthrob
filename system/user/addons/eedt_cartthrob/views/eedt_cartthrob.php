@@ -53,7 +53,7 @@
                     <td>
                         <?php
                         if (is_array($value)) {
-                            echo ee('ee_debug_toolbar:OutputService')->outputArray($value, 'N/A');
+                            echo ee('eedt:OutputService')->outputArray($value, 'N/A');
                         } else {
                             echo $value;
                         }
@@ -78,7 +78,7 @@
                         <td>
                             <?php
                             if (is_array($value)) {
-                                echo ee('ee_debug_toolbar:OutputService')->outputArray($value, 'N/A');
+                                echo ee('eedt:OutputService')->outputArray($value, 'N/A');
                             } else {
                                 echo $value;
                             }
@@ -103,7 +103,7 @@
                         <td>
                             <?php
                             if (is_array($value)) {
-                                echo ee('ee_debug_toolbar:OutputService')->outputArray($value, 'N/A');
+                                echo ee('eedt:OutputService')->outputArray($value, 'N/A');
                             } else {
                                 echo $value;
                             }
@@ -139,7 +139,7 @@
                 <td>
                     <?php
                     if (is_array($value)) {
-                        echo ee('ee_debug_toolbar:OutputService')->outputArray($value);
+                        echo ee('eedt:OutputService')->outputArray($value);
                     } else {
                         echo $value;
                     }
@@ -160,7 +160,7 @@
                     <td>
                         <?php
                         if (is_array($value)) {
-                            echo ee('ee_debug_toolbar:OutputService')->outputArray($value);
+                            echo ee('eedt:OutputService')->outputArray($value);
                         } else {
                             echo $value;
                         }
@@ -200,7 +200,7 @@
                         <td>
                             <?php
                             if (is_array($value)) {
-                                echo ee('ee_debug_toolbar:OutputService')->outputArray($value, 'N/A');
+                                echo ee('eedt:OutputService')->outputArray($value, 'N/A');
                             } else {
                                 echo $value;
                             }
@@ -228,7 +228,7 @@
                             <td>
                                 <?php
                                 if (is_array($value)) {
-                                    echo ee('ee_debug_toolbar:OutputService')->outputArray($value, 'N/A');
+                                    echo ee('eedt:OutputService')->outputArray($value, 'N/A');
                                 } else {
                                     echo $value;
                                 }

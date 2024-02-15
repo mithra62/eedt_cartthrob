@@ -11,7 +11,7 @@ class GetCtDebug extends AbstractAction
         if($this->toolbar->isAddonInstalled('cartthrob')) {
 
             loadCartThrobPath();
-            if (!ee('ee_debug_toolbar:ToolbarService')->canViewToolbar()) {
+            if (!ee('eedt:ToolbarService')->canViewToolbar()) {
                 return;
             }
 

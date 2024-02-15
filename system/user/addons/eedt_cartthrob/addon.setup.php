@@ -5,7 +5,7 @@ if (!defined('DEBUG_TOOLBAR_CARTTHROB_ADDON_NAME')) {
 }
 
 if (!defined('DEBUG_TOOLBAR_CARTTHROB_VERSION')) {
-    define('DEBUG_TOOLBAR_CARTTHROB_VERSION', '2.0.0');
+    define('DEBUG_TOOLBAR_CARTTHROB_VERSION', '1.0.0');
 }
 
 use DebugToolbar\CartThrob\Services\PanelService;
