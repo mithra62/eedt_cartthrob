@@ -50,6 +50,7 @@ class PanelService
         ee()->load->model('cartthrob_field_model');
         $items = ee()->cartthrob->cart->items_array();
         foreach ($items as $key => $item) {
+
             $items[$key]['price'] = $this->extractPrice($item, ee()->cartthrob->cart->item($key));
 
             if (!empty($item['inventory'])) {
@@ -58,14 +59,21 @@ class PanelService
 
             $items[$key]['is_shippable'] = false;
             $items[$key]['is_taxable'] = false;
-            if (ee()->cartthrob->cart->item($key)->is_shippable()) {
+            $_item = ee()->cartthrob->cart->item($key);
+            $params = [
+                'discounts' => ee()->cartthrob->get_discount_data(),
+            ];
+
+            $_item->initialize($params);
+            if ($_item->is_shippable()) {
                 $items[$key]['is_shippable'] = true;
             }
 
-            if (ee()->cartthrob->cart->item($key)->is_taxable()) {
+            if ($_item->is_taxable()) {
                 $items[$key]['is_taxable'] = true;
             }
         }
+
 
         return $items;
     }
@@ -107,10 +115,10 @@ class PanelService
      */
     public function compilePanelVars()
     {
-
         $info = ee()->cartthrob->cart->toArray();
         $items = $this->compileItems();
         $discount = ee()->cartthrob->cart->discount();
+
         $vars = [
             'general' => [
                 'total' => ee()->cartthrob->cart->total(),
@@ -148,8 +156,12 @@ class PanelService
             'session' => ee()->cartthrob_session->toArray(),
         ];
 
-        if (ee('ee_debug_toolbar:ToolbarService')->isAddonInstalled('cartthrob_gift_certificates')) {
+        if (ee('eedt:ToolbarService')->isAddonInstalled('cartthrob_gift_certificates')) {
             $vars['gift_certificates'] = ee('eedt_cartthrob:GiftCertificateService')->compilePanel($info);
+        }
+
+        if (ee('eedt:ToolbarService')->isAddonInstalled('cartthrob_fees')) {
+            $vars['fees'] = ee('eedt_cartthrob:FeesService')->compilePanel($info);
         }
 
         return $vars;

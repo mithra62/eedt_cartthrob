@@ -17,8 +17,8 @@ class EeDebugToolbarAddPanel extends AbstractHook
 
         $vars['panel_fetch_url'] = $this->toolbar->createActUrl('GetCtDebug', 'Eedt_cartthrob');
         $vars['theme_img_url'] = URL_THIRD_THEMES.'eedt_cartthrob/images/';
-        $vars['theme_js_url'] = ee('ee_debug_toolbar:OutputService')->themeUrl() . 'eedt_cartthrob/js/';
-        $vars['theme_css_url'] = ee('ee_debug_toolbar:OutputService')->themeUrl() . 'eedt_cartthrob/css/';
+        $vars['theme_js_url'] = ee('eedt:OutputService')->themeUrl() . 'eedt_cartthrob/js/';
+        $vars['theme_css_url'] = ee('eedt:OutputService')->themeUrl() . 'eedt_cartthrob/css/';
 
         $panels['cartthrob'] = new Model();
         $panels['cartthrob']->setName('cartthrob');
